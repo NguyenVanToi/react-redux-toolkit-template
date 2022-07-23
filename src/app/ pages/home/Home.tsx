@@ -5,6 +5,7 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logoutAsync } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { fetchLendersAsync } from '../../redux/slices/lenderSlice';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -13,6 +14,7 @@ function classNames(...classes: string[]) {
 const HomePage = () => {
   const dispatch = useAppDispatch();
   const authState = useAppSelector((state) => state.auth);
+  const lenderState = useAppSelector((state) => state.lender);
   const navigate = useNavigate();
 
   const user = {
@@ -43,11 +45,17 @@ const HomePage = () => {
         break;
     }
   };
+  // useEffect(() => {
+  //   if (!authState.isSignIn) {
+  //     navigate('/login');
+  //   }
+  // }, [authState.isSignIn]);
+
   useEffect(() => {
-    if (!authState.isSignIn) {
-      navigate('/login');
-    }
-  }, [authState.isSignIn]);
+    dispatch(fetchLendersAsync([]));
+    console.log('lender', lenderState.data);
+  }, []);
+
   return (
     <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
@@ -221,11 +229,28 @@ const HomePage = () => {
       </header>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          {/* Replace with your content */}
-          <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-          </div>
-          {/* /End replace */}
+          <table className="table-auto border-collapse">
+            <thead>
+              <tr>
+                <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
+                  Tên
+                </th>
+                <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
+                  Số tiên
+                </th>
+                <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
+                  Đã trả
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+                <td>Malcolm Lockyer</td>
+                <td>1961</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </main>
     </div>

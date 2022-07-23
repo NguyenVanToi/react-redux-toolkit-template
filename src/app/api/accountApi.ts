@@ -1,7 +1,6 @@
 import { LoginForm } from './../redux/slices/authSlice';
 // A mock function to mimic making an async request for data
 export function login(loginForm: LoginForm) {
-  console.log('login');
   return new Promise<{ data: LoginForm }>((resolve, reject) => {
     if (
       loginForm.email === 'toinv2610@gmail.com' &&
@@ -15,7 +14,6 @@ export function login(loginForm: LoginForm) {
 }
 
 export function logout() {
-  console.log('login');
   return new Promise<{ status: boolean }>((resolve, reject) => {
     if (1) {
       setTimeout(() => resolve({ status: true }), 500);

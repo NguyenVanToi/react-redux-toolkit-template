@@ -55,7 +55,6 @@ export const authSlice = createSlice({
         state.status = StatusLoading.LOADING;
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
-        console.log('fullfilled');
         state.status = StatusLoading.IDLE;
         state.isSignIn = true;
         state.account = action.payload;
