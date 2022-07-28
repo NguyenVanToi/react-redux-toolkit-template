@@ -10,6 +10,10 @@ export interface LenderState {
   errorMessage?: string;
 }
 
+export type LenderWithTrans = Lender & {
+  totalTrans?: number;
+};
+
 const initialState: LenderState = {
   data: [] as Lender[],
   loading: StatusLoading.IDLE,

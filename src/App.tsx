@@ -4,6 +4,8 @@ import LoginPage from './app/ pages/auth/Login';
 import HomePage from './app/ pages/home/Home';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import CreateLender from './app/ pages/home/CreateLender';
+import TableLender from './app/ pages/home/TableLender';
 
 function App() {
   return (
@@ -11,7 +13,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage />}>
+            <Route path="lender" element={<TableLender />} />
+            <Route path="lender/create" element={<CreateLender />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer />

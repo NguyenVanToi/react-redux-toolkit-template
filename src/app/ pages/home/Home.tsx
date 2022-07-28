@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logoutAsync } from '../../redux/slices/authSlice';
-import { useNavigate } from 'react-router-dom';
-import { fetchLendersAsync } from '../../redux/slices/lenderSlice';
-
+import { Outlet, useNavigate } from 'react-router-dom';
+import {
+  fetchLendersAsync,
+  LenderWithTrans,
+} from '../../redux/slices/lenderSlice';
+import { useForm } from 'react-hook-form';
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
@@ -14,8 +17,14 @@ function classNames(...classes: string[]) {
 const HomePage = () => {
   const dispatch = useAppDispatch();
   const authState = useAppSelector((state) => state.auth);
-  const lenderState = useAppSelector((state) => state.lender);
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<any>();
 
   const user = {
     name: 'Tom Cook',
@@ -51,13 +60,8 @@ const HomePage = () => {
   //   }
   // }, [authState.isSignIn]);
 
-  useEffect(() => {
-    dispatch(fetchLendersAsync([]));
-    console.log('lender', lenderState.data);
-  }, []);
-
   return (
-    <div className="min-h-full">
+    <div className="min-h-full flex flex-col">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
@@ -221,37 +225,8 @@ const HomePage = () => {
           </>
         )}
       </Disclosure>
-
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        </div>
-      </header>
-      <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <table className="table-auto border-collapse">
-            <thead>
-              <tr>
-                <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-                  Tên
-                </th>
-                <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-                  Số tiên
-                </th>
-                <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-                  Đã trả
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                <td>Malcolm Lockyer</td>
-                <td>1961</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <main className="bg-white shadow dark:bg-slate-500 flex-1 min-h-0">
+        <Outlet />
       </main>
     </div>
   );
