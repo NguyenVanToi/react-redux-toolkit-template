@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import CreateLender from './app/ pages/home/CreateLender';
 import TableLender from './app/ pages/home/TableLender';
+import File2JSON from './app/ pages/features/File2JSON';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="lender" element={<TableLender />} />
             <Route path="lender/create" element={<CreateLender />} />
           </Route>
+          <Route path="/features" element={<File2JSON />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />
