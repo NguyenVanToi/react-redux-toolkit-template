@@ -33,12 +33,12 @@ const TableLender = (props: any) => {
 
   useEffect(() => {
     dispatch(fetchLendersAsync([]));
-    console.log('lender', lenderState.data);
   }, []);
 
   useEffect(() => {
     if (lenderState.data && lenderState.data.length > 0) {
       setLenderWithTrans(lenderState.data);
+      console.log('lender', lenderState.data);
     }
   }, [lenderState.data]);
 
@@ -46,7 +46,7 @@ const TableLender = (props: any) => {
     const name = event.target.name;
     const value = event.target.value;
 
-    let _lenders: LenderWithTrans[] = [...props.lenders];
+    let _lenders: LenderWithTrans[] = [...lenderState.data];
     switch (name) {
       case 'name':
         _lenders = _lenders.filter(
