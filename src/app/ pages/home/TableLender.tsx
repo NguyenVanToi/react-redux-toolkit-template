@@ -3,13 +3,21 @@ import { DotsVerticalIcon, PlusIcon } from '@heroicons/react/outline';
 import { Fragment, useEffect, useState } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import { useNavigate } from 'react-router-dom';
+import { Lender } from '../../api/api';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   fetchLendersAsync,
   LenderWithTrans,
 } from '../../redux/slices/lenderSlice';
+import CreateLender from './CreateLender';
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
+}
+
+enum ActionLender {
+  EDIT = 'EDIT',
+  CREATE = 'CREATE',
+  DELETE = 'DELETE',
 }
 
 const TableLender = (props: any) => {
@@ -20,6 +28,8 @@ const TableLender = (props: any) => {
   const [lendersWithTrans, setLenderWithTrans] = useState<LenderWithTrans[]>(
     []
   );
+  const [isShow, setIsShow] = useState(false);
+  const [lenderSelected, setLenderSelected] = useState<Lender>();
 
   useEffect(() => {
     dispatch(fetchLendersAsync([]));
@@ -52,6 +62,17 @@ const TableLender = (props: any) => {
         break;
     }
     setLenderWithTrans(_lenders);
+  };
+
+  const handleLender = (lender: LenderWithTrans, action: ActionLender) => {
+    switch (action) {
+      case ActionLender.EDIT:
+        setLenderSelected(lender);
+        setIsShow(true);
+        break;
+      case ActionLender.DELETE:
+        break;
+    }
   };
 
   return (
@@ -93,10 +114,10 @@ const TableLender = (props: any) => {
       <div className="w-full mx-auto py- sm:px-6 lg:px-8">
         <div className="flex w-100 mb-2">
           <button
-            className="rounded-full w-8 h-8 ml-auto border border-slate-200 p-1"
-            onClick={() => navigate('/lender/create')}
+            className="rounded-full w-8 h-8 ml-auto border border-slate-800 p-1"
+            onClick={() => setIsShow(true)}
           >
-            <PlusIcon className="text-slate-200" />
+            <PlusIcon />
           </button>
         </div>
         <table className="table-auto border-collapse w-full">
@@ -168,7 +189,12 @@ const TableLender = (props: any) => {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 dark:bg-slate-700">
-                          <div className="py-1">
+                          <div
+                            className="py-1"
+                            onClick={() =>
+                              handleLender(lender, ActionLender.EDIT)
+                            }
+                          >
                             <Menu.Item>
                               {({ active }) => (
                                 <span
@@ -205,6 +231,11 @@ const TableLender = (props: any) => {
             )}
           </tbody>
         </table>
+        <CreateLender
+          isShow={isShow}
+          setIsShow={setIsShow}
+          lender={lenderSelected}
+        />
       </div>
     </div>
   );

@@ -32,6 +32,32 @@ export const fetchLendersAsync = createAsyncThunk(
   }
 );
 
+export const createLenderAsync = createAsyncThunk(
+  'lender/create',
+  async (filter: any, { rejectWithValue }) => {
+    try {
+      const response = await fetchLenders();
+      return response;
+    } catch (e) {
+      console.log('err', e);
+      return rejectWithValue(e);
+    }
+  }
+);
+
+export const editLenderAsync = createAsyncThunk(
+  'lender/edit',
+  async (filter: any, { rejectWithValue }) => {
+    try {
+      const response = await fetchLenders();
+      return response;
+    } catch (e) {
+      console.log('err', e);
+      return rejectWithValue(e);
+    }
+  }
+);
+
 export const lenderSlice = createSlice({
   name: 'lender',
   initialState,
